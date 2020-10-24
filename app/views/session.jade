@@ -1,0 +1,72 @@
+extends shared/_layout.jade
+
+block content
+  .row
+    .col-xs-12.clearfix
+      h2.pull-left Session
+      a(href='/').btn.btn-primary.margin-top-20.pull-right New Session
+
+  .row
+    .col-sm-6
+      - var request = session.request;
+      - var response = session.response;
+      if request.Type !== 'Timeout'
+        .session-ui
+          .session-ui-content
+            p!= response.message
+            case response.action
+              when 'FC'
+                form(action='/session/response', method='POST')#responseForm.form
+                  .form-group
+                    input(name='UserInput').form-control
+                  button(type='submit').btn.btn-default.margin-right-10 Send
+                  a(href='/session/release').btn.btn-default Cancel
+              when 'FB'
+                  a(href='/').btn.btn-default OK
+        p: a(href='/session/timeout').btn.btn-warning.margin-top-10 Send Timeout
+      else
+        p Timout sent!
+        p: a(href='/').btn.btn-primary New Session
+
+
+    .col-sm-6
+      h3 USSD Client URL
+      p= session.ClientUrl
+
+      h3 Request:
+
+      table.table.table-bordered
+        tr
+          th Session ID
+          td= request.sessionId
+        tr
+          th Service Code
+          td= request.ServiceCode
+        tr
+          th MSISDN
+          td= request.msisdn
+        //- tr
+        //-   th Type
+        //-   td= request.Type
+        tr
+          th Input
+          td= request.input
+        //- tr
+        //-   th Operator
+        //-   td= request.Operator
+        tr
+          th New Request
+          td= request.newRequest
+        //- tr
+        //-   th Client State
+        //-   td= request.ClientState
+
+      h3 Response:
+
+      table.table.table-bordered
+        tr
+          th Action
+          td= response.action
+        tr
+          th Message
+          td!= response.message
