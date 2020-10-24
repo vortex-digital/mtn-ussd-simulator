@@ -162,8 +162,9 @@ function messageClient (session) {
     .end(function (err, res) {
       if (err) return reject(err);
       if (!res.ok) 
-        return reject(new Error("Didn't get a successful response from client at "
-          + res.status + res.body + session.ClientUrl));
+        return reject(new Error(session.ClientUrl +
+          "\nStatus : "+ res.status + "\nMessage : " + res.body.message + "\n" ));
+          
       session.response = res.body;
       resolve(session);
     })
