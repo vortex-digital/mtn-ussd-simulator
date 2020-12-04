@@ -27,11 +27,19 @@ function session (req, res, next) {
   var session = req.cookies.session;
   if (!session) 
     return res.redirect('/');
-  session.response.message = session.response.message
-    .substr(0, 182)
+
+  var message = session.response.message.substr(0, 182);
+  message = message
+            .replace('#', '<br>')
+            .replace('#', '<br>')
+    .replace('#', '<br>')
+    .replace('#', '<br>')
+    .replace('#', '<br>')
+    .replace('#', '<br>')
     .replace('#', '<br>')
     .replace('#', '<br>')
     .replace('#', '<br>');
+  session.response.message = message;
   res.render('session', {
     session: session
   });
